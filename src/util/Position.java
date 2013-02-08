@@ -8,7 +8,6 @@ public class Position {
 	public Position(int r, int c) {
 		row = r;
 		column = c;
-		throw new IllegalArgumentException("Hihihi");
 	}
 	
 	public void setColumn(int c) {

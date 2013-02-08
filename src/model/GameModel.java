@@ -340,7 +340,6 @@ public class GameModel extends Observable implements ActionListener {
 				}
 			}
 			if (rowFilled) {
-				flashRow(i);
 				removeRow(i);
 				numberOfLines++;
 			}
@@ -362,13 +361,40 @@ public class GameModel extends Observable implements ActionListener {
 		notifyObservers();
 	}
 	
-	private void flashRow(int row) {
-		for (int j = 0; j < columns; j++) {
-			grid[row][j] = new Square(Color.white, Color.white);
-			grid[row][j].setFilledStatus(true);
+	private void flashRows() {
+		int loops = 0;
+		while (loops < 5) {
+			int filledRows = 0;
+			for (int i = 0; i < rows; i++) {
+				boolean rowFilled = true;
+				for (int j = 0; j < columns; j++) {
+					if (!grid[i][j].isFilled()) {
+						rowFilled = false;
+					}
+				}
+				if (rowFilled) {
+					for (int j = 0; j < columns; j++) {
+						if (loops % 2 == 0) {	
+							grid[i][j] = new Square(Color.white, Color.white);
+							grid[i][j].setFilledStatus(true);
+						} else {
+							grid[i][j] = new Square(background, background);
+							grid[i][j].setFilledStatus(true);
+						}
+					}
+					filledRows++;
+				}
+			}
+			
+			if (filledRows > 0) {
+				setChanged();
+				notifyObservers();
+//				try {
+//					Thread.sleep(500);
+//				} catch (Exception e) {}
+			}
+			loops++;
 		}
-		setChanged();
-		notifyObservers();
 	}
 
 	@Override
@@ -376,6 +402,7 @@ public class GameModel extends Observable implements ActionListener {
 		Position lastPos = activePart.getPosition();
 		moveDown();
 		if (lastPos.equals(activePart.getPosition())) {
+			flashRows();
 			removeFilledRows();
 			addPart();
 			
@@ -397,6 +424,7 @@ public class GameModel extends Observable implements ActionListener {
 		while (moveDown()) {
 			moveDown();
 		}
+		flashRows();
 		removeFilledRows();
 		addPart();
 		
