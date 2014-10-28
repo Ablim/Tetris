@@ -5,6 +5,7 @@ This is a simple version of Tetris, written in Java.
 
 Controls
 ========
+<pre>
 n      - new game
 e      - exit
 p      - pause
@@ -13,4 +14,5 @@ left   - move left
 right  - move right
 down   - move down
 up     - rotate
-s      - special mode
+s      - special mode 
+</pre>
